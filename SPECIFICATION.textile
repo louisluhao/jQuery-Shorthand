@@ -10,29 +10,21 @@ h3. Tag Shorthand
 
 The first element of the shorthand must be the tag name, and is the only required component:
 
-```js
-"div"
-```
+bc. "div"
 
 This would generate the following element:
 
-```html
-<div></div>
-```
+bc. <div></div>
 
 h3. ID shorthand
 
 The optional ID is defined by using the CSS symbol for ID, a hash mark (#). The ID must come after the tag.
 
-```js
-"div#my-div-id"
-```
+bc. "div#my-div-id"
 
 This would generate the following element:
 
-```html
-<div id="my-div-id"></div>
-```
+bc. <div id="my-div-id"></div>
 
 *Note*: If more than one ID is passed, the first will be used.
 
@@ -42,29 +34,21 @@ The optional class(es) are defined by using the CSS symbol for class, a period (
 
 You can have any number of classes defined.
 
-```js
-"div.my-class.my-other-class"
-```
+bc. "div.my-class.my-other-class"
 
 This would generate the following element:
 
-```html
-<div class="my-class my-other-class"></div>
-```
+bc. <div class="my-class my-other-class"></div>
 
 h3. Combination Shorthand
 
 When using both classes and IDs, the order of them is irrelevant, providing they come after the tag name.
 
-```js
-"div.my-class#my-div-id.my-other-class"
-```
+bc. "div.my-class#my-div-id.my-other-class"
 
 This would generate the following element:
 
-```html
-<div id="my-div-id" class="my-class my-other-class"></div>
-```
+bc. <div id="my-div-id" class="my-class my-other-class"></div>
 
 h2. Advanced Shorthand
 
@@ -74,43 +58,31 @@ The primary difference between *Tag* and *Advanced Shorthand* is the element typ
 
 An example of *Advanced Shorthand*:
 
-```js
-["div#my-div-id.my-class"]
-```
+bc. ["div#my-div-id.my-class"]
 
 Is equivalent to the same *Tag Shorthand*:
 
-```js
-"div#my-div-id.my-class"
-```
+bc. "div#my-div-id.my-class"
 
 Both would generate the following element:
 
-```html
-<div id="my-div-id" class="my-class"></div>
-```
+bc. <div id="my-div-id" class="my-class"></div>
 
 h2. Text Content (@Advanced Shorthand@)
 
 Text content can be provided as any string of text within *Advanced Shorthand* which is not the *Tag Shorthand*.
 
-```js
-["span", "This is my span."]
-```
+bc. ["span", "This is my span."]
 
 This would generate the following element:
 
-```html
-<span>This is my span.</span>
-```
+bc. <span>This is my span.</span>
 
 h2. Attributes, jQuery Functions, and Styles (@Advanced Shorthand@)
 
 Attributes, jQuery Functions, and Styles (AJS Shorthand) can be bound to an object through Advanced Shorthand. This is achieved by adding an @Object@ to the *Advanced Shorthand* declaration.
 
-```js
-["input", {}]
-```
+bc. ["input", {}]
 
 Within this object, you can bind any combination of Element Attributes, jQuery Functions, and CSS Styles.
 
@@ -118,20 +90,16 @@ h3. Element Attributes (@AJS Shorthand@)
 
 Event attributes are simply held within the AES object, and based on the key-value pairs provided to it.
 
-```js
-["input", 
-
+bc. ["input", 
 {
 	type: "text", 
 	name: "first-name"
 }]
-```
+
 
 This would generate the following element:
 
-```html
-<input type="text" name="first-name" />
-```
+bc. <input type="text" name="first-name" />
 
 h3. jQuery Functions (@AJS Shorthand@)
 
@@ -139,12 +107,10 @@ jQuery functions can be set up for shorthand to call certain methods. Within the
 
 One method of implementation with jQuery functionality is simply calling a function with a group of parameters. For example:
 
-```js
-["input", 
+bc. ["input", 
 {
 	type: "text", 
 	name: "first-name",
-	
 	$: 
 	{
 		"fadeIn": 
@@ -154,22 +120,17 @@ One method of implementation with jQuery functionality is simply calling a funct
 		]
 	}
 }]
-```
 
 This is analogous to:
 
-```js
-jQuery("input").fadeIn(1500, "linear");
-```
+bc. jQuery("input").fadeIn(1500, "linear");
 
 You can also pass in functions, useful when binding event listeners:
 
-```js
-["input", 
+bc. ["input", 
 {
 	type: "text", 
 	name: "first-name",
-	
 	$: 
 	{
 		"focus": function ()
@@ -178,25 +139,20 @@ You can also pass in functions, useful when binding event listeners:
 		}
 	}
 }]
-```
 
 This is analogous to:
 
-```js
-jQuery("input").focus(function ()
+bc. jQuery("input").focus(function ()
 {
 	console.log("input focused");
 });
-```
+
 
 To support passing binding functions over AJAX requests, the parser supports strings which can resolve into functions. Assuming the following setup:
 
-```js
-jQuery.my_plugin.specialClickHandler = function (event) { /* */ }
-```
+bc. jQuery.my_plugin.specialClickHandler = function (event) { /* */ }
 
-```js
-["input", 
+bc. ["input", 
 {
 	type: "text", 
 	name: "first-name",
@@ -206,22 +162,17 @@ jQuery.my_plugin.specialClickHandler = function (event) { /* */ }
 		"click": "jQuery::my_plugin::specialClickHandler"
 	}
 }]
-```
 
 These functions are always resolved starting at window scope. So this is analogous to:
 
-```js
-jQuery("input").focus(jQuery.my_plugin.specialClickHandler);
-```
+bc. jQuery("input").focus(jQuery.my_plugin.specialClickHandler);
 
 Finally, you can mix and match the function and parameter passing:
 
-```js
-["input", 
+bc. ["input", 
 {
 	type: "button", 
 	name: "first-name",
-	
 	$: 
 	{
 		"toggle": 
@@ -235,12 +186,10 @@ Finally, you can mix and match the function and parameter passing:
 		]
 	}
 }]
-```
 
 This is analogous to:
 
-```js
-jQuery("input").toggle(function (event)
+bc. jQuery("input").toggle(function (event)
 {
 	console.log("blah");
 }, jQuery.my_plugin.toggleOut);
@@ -249,24 +198,19 @@ h3. CSS Styles (@AJS Shorthand@)
 
 Finally, CSS Styles can be passed with the shorthand using the @_@ key.
 
-```js
-["input", 
+bc. ["input", 
 {
 	type: "button", 
 	name: "first-name",
-	
 	_:
 	{
 		"backgroundColor": "#F00"
 	}
 }]
-```
 
 This would generate the following element:
 
-```html
-<input type="text" name="first-name" style="background-color: #F00;" />
-```
+bc. <input type="text" name="first-name" style="background-color: #F00;" />
 
 h2. Child Elements (@Advanced Shorthand@)
 
