@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<title>jQuery Shorthand Example</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script type="text/javascript" src="jquery.shorthand.js"></script>
+		<script type="text/javascript">
+		    (function ($)
+		    {
+		    	var element = $$("div#dom.test.other-class-test");
+		    	
+		    	console.log(element);
+		    	console.log(element.toShorthand());
+		    	console.log(element.toShorthand(true));
+		    }(jQuery));
+		</script>
+	</head>
+	<body>
+
+	</body>
+</html>
