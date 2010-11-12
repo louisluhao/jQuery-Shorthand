@@ -60,6 +60,55 @@
 	//------------------------------
 	
 	//------------------------------
+	//  Utility Methods
+	//------------------------------
+	
+	/**
+	 *	Extract special values from the attribute component.
+	 *
+	 *	@param content	The content to extract.
+	 *
+	 *	@return Object containing the separated values.
+	 *
+	 *	Signature of return:
+	 *	{
+	 *		attributes: {},
+	 *		styles: {},
+	 *		functions: {}
+	 *	}
+	 */
+	function extractSpecialValues(content)
+	{
+			/**
+			 *	The response object.
+			 */
+		var response = 
+			{
+				attributes: undefined,
+				
+				styles: undefined,
+				
+				functions: undefined
+			};
+			
+		if (content._ !== undefined)
+		{
+			response.styles = content._;
+			delete content._;
+		}
+		
+		if (content.$ !== undefined)
+		{
+			response.functions = content.$;
+			delete content.$;
+		}
+		
+		response.attributes = content;
+		
+		return response;
+	}
+	
+	//------------------------------
 	//	 Element Creation
 	//------------------------------
 	
@@ -122,20 +171,41 @@
 		return element;
 	}
 	
-	//------------------------------
-	//	Tree Creation
-	//------------------------------
+	/**
+	 *	Create a complex element.
+	 *
+	 *	@param shorthand	The complex shorthand.
+	 */
+	function createComplexElement(shorthand)
+	{
+		//extractSpecialValues
+	}
 	
 	/**
 	 *	Create a document tree from a complex shorthand declaration.
 	 *
 	 *	@param tree	The shorthand tree to construct.
 	 *
-	 *	@return jQuery object wrapping the constructed HTML tree.
+	 *	@return jQuery object wrapping the constructed siblings.
 	 */
-	function createTree(tree)
+	function createSiblings(tree)
 	{
+		//	Create children items
+	}
 	
+	/**
+	 *	Create a group of elements with disperate configurations but the same tag.
+	 *
+	 *	@param tag			The tag type
+	 *
+	 *	@param definitions	The definitions for each instance to create in the group.
+	 *
+	 *	@return jQuery object wrapping the constructed group of elements.
+	 */
+	function createGroup(tag, definitions)
+	{
+		//	If the first element in any definition contains an ID or classes, add them to the tag.
+		//	If the tag contains an ID, remove it.
 	}
 	
 	//------------------------------
@@ -276,7 +346,43 @@
 			}
 			else if ($.isArray(shorthand))
 			{
-				elements.push(createTree(shorthand));
+				//	If there is no content defined, break.
+				if (shorthand.length === 0)
+				{
+					return;
+				}
+				
+				/**
+				 *	If the first element of the shorthand is an array, it is a sibling group, containing
+				 *	elements which should be created together.
+				 */
+				else if ($.isArray(shorthand[0]))
+				{
+					elements.push(createSiblings(shorthand));
+				}
+				
+				/**
+				 *	If the element is a string, this is a complex shorthand declaration.
+				 */
+				else if (typeof shorthand[0] === "string")
+				{
+					if (shorthand[0].substr(0, 1) === "&")
+					{
+						elements.push(createGroup(shorthand.shift().substr(1), shorthand));
+					}
+					else
+					{
+						elements.push(createComplexElement(shorthand));
+					}
+				}
+				
+				/**
+				 *	If none of these conditions are met, we can't parse this.
+				 */
+				else
+				{
+					return;
+				}
 			}
 		});
 	

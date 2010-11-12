@@ -68,7 +68,7 @@ Both would generate the following element:
 
 bc. <div id="my-div-id" class="my-class"></div>
 
-h2. Text Content (@Advanced Shorthand@)
+h2. Text Content @Advanced Shorthand@
 
 Text content can be provided as any string of text within *Advanced Shorthand* which is not the *Tag Shorthand*.
 
@@ -78,7 +78,7 @@ This would generate the following element:
 
 bc. <span>This is my span.</span>
 
-h2. Attributes, jQuery Functions, and Styles (@Advanced Shorthand@)
+h2. Attributes, jQuery Functions, and Styles @Advanced Shorthand@
 
 Attributes, jQuery Functions, and Styles (AJS Shorthand) can be bound to an object through Advanced Shorthand. This is achieved by adding an @Object@ to the *Advanced Shorthand* declaration.
 
@@ -86,7 +86,7 @@ bc. ["input", {}]
 
 Within this object, you can bind any combination of Element Attributes, jQuery Functions, and CSS Styles.
 
-h3. Element Attributes (@AJS Shorthand@)
+h3. Element Attributes @AJS Shorthand@
 
 Event attributes are simply held within the AES object, and based on the key-value pairs provided to it.
 
@@ -101,7 +101,7 @@ This would generate the following element:
 
 bc. <input type="text" name="first-name" />
 
-h3. jQuery Functions (@AJS Shorthand@)
+h3. jQuery Functions @AJS Shorthand@
 
 jQuery functions can be set up for shorthand to call certain methods. Within the AJS object, using the key @$@ allows the defining of jQuery function calls.
 
@@ -146,7 +146,6 @@ bc. jQuery("input").focus(function ()
 {
 	console.log("input focused");
 });
-
 
 To support passing binding functions over AJAX requests, the parser supports strings which can resolve into functions. Assuming the following setup:
 
@@ -194,7 +193,7 @@ bc. jQuery("input").toggle(function (event)
 	console.log("blah");
 }, jQuery.my_plugin.toggleOut);
 
-h3. CSS Styles (@AJS Shorthand@)
+h3. CSS Styles @AJS Shorthand@
 
 Finally, CSS Styles can be passed with the shorthand using the @_@ key.
 
@@ -212,10 +211,14 @@ This would generate the following element:
 
 bc. <input type="text" name="first-name" style="background-color: #F00;" />
 
-h2. Child Elements (@Advanced Shorthand@)
+h2. Child Elements @Advanced Shorthand@
 
 *TBD*
 
-h2. Sibling Elements (@Advanced Shorthand@)
+h2. Sibling Elements @Advanced Shorthand@
+
+*TBD*
+
+h2. Item Groups @Advanced Shorthand@
 
 *TBD*
