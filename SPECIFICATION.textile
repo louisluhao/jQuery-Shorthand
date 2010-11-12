@@ -155,7 +155,6 @@ bc. ["input",
 {
 	type: "text", 
 	name: "first-name",
-	
 	$: 
 	{
 		"click": "jQuery::my_plugin::specialClickHandler"
