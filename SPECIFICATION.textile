@@ -179,7 +179,6 @@ bc. ["input",
 			{
 				console.log("blah");
 			},
-			
 			"jQuery::my_plugin::toggleOut"
 		]
 	}
