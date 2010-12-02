@@ -90,7 +90,7 @@
 					{
 						var element = $$(["div", {_: {borderWidth: 1}}]);
 						
-						expect(element.css("border-width")).to(equal, "1px");
+						expect(element.css("borderWidth")).to(equal, "1px");
 					});
 					
 					it("never creates element with underscore attribute from shorthand: [div, {_: {borderWidth: 1}}]", function ()
