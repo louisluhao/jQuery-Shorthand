@@ -255,16 +255,13 @@ bc. ["&option.my-option",
 	[
 		{
 			value: "1"
-		},
-		
+		},	
 		"Option 1"
 	],
-	
 	[
 		{
 			value: "2"
 		},
-		
 		"Option 2"
 	]
 ]
