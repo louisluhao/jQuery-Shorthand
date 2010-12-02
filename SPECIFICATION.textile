@@ -2,9 +2,9 @@ h1. Shorthand Specification
 
 *Version:* 0.1.0
 
-h2. Element Shorthand
+h2. Simple Shorthand
 
-Element shorthand defines an HTML element, an optional ID, and any number of optional classes.
+Simple shorthand defines an HTML element, an optional ID, and any number of optional classes.
 
 h3. Tag Shorthand
 
@@ -227,7 +227,11 @@ bc. <div class="container">
 	<span class="c">C</span>
 </div>
 
-h2. Sibling Elements @Advanced Shorthand@
+h2. Complex Shorthand
+
+Complex shorthand describes unique combinations of @Advanced Shorthand@.
+
+h2. Sibling Elements @Complex Shorthand@
 
 If you need to create a group of sibling elements which exist outside of any specific container, an array of shorthand arrays
 can be provided, and the resulting element will contain all of the elements.
@@ -246,7 +250,7 @@ And the resulting object is analogous to:
 
 bc. jQuery("h1, blockquote")
 
-h2. Item Groups @Advanced Shorthand@
+h2. Item Groups @Complex Shorthand@
 
 By providing a standard declaration in which the tag declaration contains an ampersand @&@, an item group is specified, allowing
 a single tag/class declaration to be configured as different instances using the configurations in the other elements.
