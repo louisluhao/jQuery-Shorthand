@@ -8,6 +8,8 @@ h1. jQuery Shorthand
 
 *Author:* "Eric Garside":http://code.knewton.com/
 
+*Size:* 4.6K Closure Compiled, 15K Source
+
 h2. Overview
 
 Allows jQuery to create HTMLElements and modify them using a JSON-like format.
@@ -28,4 +30,4 @@ h2. Changelog
 
 *Version 0.1*
 
-* Initial Release
+* Initial Release 

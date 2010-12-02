@@ -128,7 +128,22 @@
 			 *	The scope chain being processed.
 			 */
 		var chain = window;
-	
+
+		if (typecheck(value, "Array") || typecheck(value, "Object"))
+		{
+			$.each(value, function (index, item)
+			{
+				value[index] = evaluate(item, strict);
+			});
+		
+			return value;
+		}
+		
+		if (!typecheck(value, "String"))
+		{
+			return value;
+		}
+		
 		/**
 		 *	Walk the chain to find a valid handler.
 		 */
@@ -264,7 +279,7 @@
 		 */
 		if (classes !== null)
 		{
-			element.addClass(classes.join(' ').replace(RX_CLEAN_CLASSES, ''))
+			element.addClass(classes.join(' ').replace(RX_CLEAN_CLASSES, ''));
 		}
 		
 		/**
@@ -629,7 +644,7 @@
 	 *			If multiple arguments are passed, the return will be an array of jQuery 
 	 *			objects; ordered by their position in the arguments.
 	 */
-	parseShorthand = function()
+	parseShorthand = function ()
 	{
 			/**
 			 *	The constructed elements to return.
@@ -685,7 +700,7 @@
 		});
 	
 		return elements.length === 1 ? elements[0] : elements;
-	}
+	};
 	
 	//------------------------------
 	//	 Conflict Handler
