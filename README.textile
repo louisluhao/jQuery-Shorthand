@@ -8,7 +8,7 @@ h1. jQuery Shorthand
 
 *Author:* "Eric Garside":http://code.knewton.com/
 
-*Size:* 4.6K Closure Compiled, 15K Source
+*Size:* 4.8K Closure Compiled, 15K Source
 
 h2. Overview
 
