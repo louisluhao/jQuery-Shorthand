@@ -9,11 +9,95 @@
 		<script type="text/javascript">
 		    (function ($)
 		    {
-		    	var element = $$("div#dom.test.other-class-test");
+		    	$.handlers = 
+		    	{
+		    		myHandler: function ()
+		    		{
+		    			console.log("How does it feel to be so great at so much stuff?");
+		    		}
+		    	};
+		    /*
+		    	var simple = $$("div#dom.test.other-class-test"),
 		    	
-		    	console.log(element);
-		    	console.log(element.toShorthand());
-		    	console.log(element.toShorthand(true));
+		    		complex = $$(["input#test.some-class", 
+		    		{
+		    			name: "parsed",
+		    			
+		    			type: "text",
+		    			
+		    			value: "Awesome, sauce-em.",
+		    			
+		    			_:
+		    			{
+		    				border: "1px solid #FFF",
+		    				
+		    				backgroundColor: "red",
+		    				
+		    				color: "#FFF"
+		    			},
+		    			
+		    			$:
+		    			{
+		    				focus: function ()
+		    				{
+		    					console.log("Your face, it has just been melted.");
+		    				},
+		    				
+		    				blur: "jQuery::handlers::myHandler"
+		    			}
+		    		}]),
+		    		
+		    		siblings = $$([
+		    			["span.class-a", "A"],
+		    			["span.class-b", "B"]
+		    		]),
+		    		
+		    		group = $$(["&option.my-option",
+		    			[{value: "1"}, "Option 1"],
+		    			[{value: "2"}, "Option 2"]
+		    		]);
+		    	
+		    	console.log("Simple", simple, simple.toShorthand());
+		    	
+		    	console.log("Siblings", siblings);
+		    	
+		    	console.log("Group", group);*/
+
+		    	$(function ()
+		    	{
+		    		var markup = 
+		    		[
+		    			"div.container",
+		    			
+		    			"Heyo!&rsaquo;",
+		    			
+		    			{
+		    				title: "A", 
+		    				_: {backgroundColor: "#F00", color: "#0F0"}, 
+		    				$: {"click": "jQuery::handlers::myHandler"}
+		    			},
+			    		
+			    		[
+			    			["span#hey"],
+			    		
+				    		["select.my-select",
+				    			[
+				    				["&option",
+				    					["Option 1"],
+				    					["Option 2"]
+				    				]
+				    			]
+				    		]
+			    		]
+			    	];
+			    	
+			    	console.log("Complex export", $$(markup).appendTo("body").toShorthand());
+		    	
+		    	/*
+		    		complex.appendTo("body");
+		    		siblings.appendTo("body");
+		    	*/
+		    	});
 		    }(jQuery));
 		</script>
 	</head>

@@ -211,12 +211,67 @@ bc. <input type="text" name="first-name" style="background-color: #F00;" />
 
 h2. Child Elements @Advanced Shorthand@
 
-*TBD*
+Child elements can be provided within complex shorthand declarations as an array only.
+
+bc. ["div.container",
+	["span.a", "A"],
+	["span.b", "B"],
+	["span.c", "C"]
+]
+
+This is analogous to:
+
+bc. <div class="container">
+	<span class="a">A</span>
+	<span class="b">B</span>
+	<span class="c">C</span>
+</div>
 
 h2. Sibling Elements @Advanced Shorthand@
 
-*TBD*
+If you need to create a group of sibling elements which exist outside of any specific container, an array of shorthand arrays
+can be provided, and the resulting element will contain all of the elements.
+
+bc. [
+	["h1", "Some Header"],
+	["blockquote", "Some Text"]
+]
+
+This is analogous to:
+
+bc. <h1>Some Header</h1>
+<blockquote>Some Text</blockquote>
+
+And the resulting object is analogous to:
+
+bc. jQuery("h1, blockquote")
 
 h2. Item Groups @Advanced Shorthand@
 
-*TBD*
+By providing a standard declaration in which the tag declaration contains an ampersand @&@, an item group is specified, allowing
+a single tag/class declaration to be configured as different instances using the configurations in the other elements.
+
+bc. ["&option.my-option", 
+	[
+		{
+			value: "1"
+		},
+		
+		"Option 1"
+	],
+	
+	[
+		{
+			value: "2"
+		},
+		
+		"Option 2"
+	]
+]
+
+This is analogous to:
+
+bc. <option class="my-option" value="1">Option 1</option>
+<option class="my-option" value="2">Option 2</option>
+
+The shorthand instances provided as array element within the container should not contain tag definitions.

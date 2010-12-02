@@ -1,0 +1,22 @@
+{
+	"name": "shorthand", 
+	
+	"class": "plugin", 
+	
+	"framework": "jquery", 
+	
+	"version": "0.1.0", 
+	
+	"composition": ["js"],
+	
+	"dependencies": 
+	{
+		"jquery": 
+		{
+			"framework": 
+			{
+				"jquery": "1.4.2"
+			}
+		}
+	}
+}

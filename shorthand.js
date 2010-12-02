@@ -1,0 +1,1 @@
+jquery.shorthand.js

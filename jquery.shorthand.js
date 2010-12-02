@@ -41,6 +41,33 @@
 		 *	Regular Expression to clean periods out of classes.
 		 */
 		RX_CLEAN_CLASSES = /\./g,
+		
+		/**
+		 *	Regular Expression to grab the function name from a jQuery chain binding command.
+		 */
+		RX_FUNCTION = /^[a-zA-Z_]+/,
+		
+		/**
+		 *	Regular Expression to separate scoping commands from event bindings.
+		 */
+		RX_SCOPE = /::/,
+		
+		/**
+		 *	A list of attribute types to ignore when serializing an element.
+		 */
+		ATTRIBUTE_BLACKLIST = 
+		[
+			"class",
+			
+			"style",
+			
+			"id"
+		],
+		
+		/**
+		 *	The node type identifier for text nodes.
+		 */
+		TEXT_NODE = 3,
 	
 	//------------------------------
 	//
@@ -51,7 +78,12 @@
 		/**
 		 *	Capture the current value to handle overwriting.
 		 */
-		_$$ = window.$$;
+		_$$ = window.$$,
+		
+		/**
+		 *	The processor function for handling parsing.
+		 */
+		parseShorthand;
 	
 	//------------------------------
 	//
@@ -60,52 +92,127 @@
 	//------------------------------
 	
 	//------------------------------
-	//  Utility Methods
+	//	 Utility Methods
 	//------------------------------
 	
 	/**
-	 *	Extract special values from the attribute component.
+	 *	Check the type of an object.
 	 *
-	 *	@param content	The content to extract.
+	 *	@param type		The item to check.
 	 *
-	 *	@return Object containing the separated values.
+	 *	@param compare	The string to compare it to. Must be capitalized and of the proper type. (Object, Array, String, etc)
 	 *
-	 *	Signature of return:
-	 *	{
-	 *		attributes: {},
-	 *		styles: {},
-	 *		functions: {}
-	 *	}
+	 *	@return	True if the types match, false otherwise.
 	 */
-	function extractSpecialValues(content)
+	function typecheck(type, compare)
+	{
+		return !type ? false : !type.constructor ? false : type.constructor.toString().match(new RegExp(compare + '\\(\\)', 'i')) !== null;	 
+	}
+	
+	/**
+	 *	Given a scoping chain, follow it down to the actual listener it references at the end of
+	 *	the scope.
+	 *
+	 *	@param value	The scope chain value to extract a true function listener from.
+	 *
+	 *	@param strict	If true, and a valid listener could not be extracted from the scoping chain,
+	 *					return false instead of a dead listener.
+	 *
+	 *	@return A function, (or boolean if strict is true) representing the listener. In the case a
+	 *			listener could not be extracted from the scoping chain, and strict is false, a noop
+	 *			function will be returned.
+	 */
+	function evaluate(value, strict)
 	{
 			/**
-			 *	The response object.
+			 *	The scope chain being processed.
 			 */
-		var response = 
+		var chain = window;
+	
+		/**
+		 *	Walk the chain to find a valid handler.
+		 */
+		$.each(value.split(RX_SCOPE), function (index, scope)
+		{
+			if (!chain[scope])
 			{
-				attributes: undefined,
-				
-				styles: undefined,
-				
-				functions: undefined
-			};
+				return;
+			}
+			else
+			{
+				chain = chain[scope];
+			}
+		});
+		
+		return typecheck(chain, "Function") ? chain : (strict ? false : function () {});
+	}
+	
+	/**
+	 *	Process functional command declarations for the provided element.
+	 *
+	 *	@param element		The jQuery element to work against.
+	 *
+	 *	@param functional	The functional shorthand to process.
+	 */
+	function processFunctionalCommands(element, functional)
+	{
+		$.each(functional, function (command, args)
+		{
+			command = command.match(RX_FUNCTION)[0];
 			
-		if (content._ !== undefined)
-		{
-			response.styles = content._;
-			delete content._;
-		}
+			/**
+			 *	If the command doesn't exist, abort.
+			 */
+			if (!typecheck($.fn[command], "Function"))
+			{
+				return;
+			}
+			
+			/**
+			 *	Possible serialized function declaration.
+			 */
+			if (typecheck(args, "String"))
+			{
+				$.fn[command].call(element, evaluate(args));
+			}
+			
+			/**
+			 *	Literal function declaration.
+			 */
+			else if (typecheck(args, "Function"))
+			{
+				$.fn[command].call(element, args);
+			}
 		
-		if (content.$ !== undefined)
-		{
-			response.functions = content.$;
-			delete content.$;
-		}
-		
-		response.attributes = content;
-		
-		return response;
+			/**
+			 *	Actual arguments to provide to the function.
+			 */
+			else if (typecheck(args, "Array"))
+			{
+				$.each(args, function (index, arg)
+				{
+					args[index] = evaluate(arg, true) || arg;
+				});
+				
+				$.fn[command].apply(element, args);
+			}
+			
+			/**
+			 *	If the value is undefined, call the method without arguments.
+			 */
+			else if (args === undefined)
+			{
+				$.fn[command].call(element);
+			}
+			
+			/**
+			 *	Unable to process.
+			 */
+			else
+			{
+				return;
+			}
+		});
 	}
 	
 	//------------------------------
@@ -174,11 +281,111 @@
 	/**
 	 *	Create a complex element.
 	 *
-	 *	@param shorthand	The complex shorthand.
+	 *	@param elementShorthand	The element shorthand.
+	 *
+	 *	@param shorthand		The complex shorthand.
 	 */
-	function createComplexElement(shorthand)
+	function createComplexElement(elementShorthand, shorthand)
 	{
-		//extractSpecialValues
+			/**
+			 *	Create an element from the shorthand at the front of the string.
+			 */
+		var element = createElement(elementShorthand),
+			
+			/**
+			 *	Standard attributes to set.
+			 */
+			attributes,
+			
+			/**
+			 *	Text to inject.
+			 */
+			text,
+			
+			/**
+			 *	Children declarations.
+			 */
+			children;
+			
+		/**
+		 *	Sort out the complex shorthand.
+		 */
+		$.each(shorthand, function (index, value)
+		{
+			/**
+			 *	Object literals contain attribute declaration.
+			 */
+			if (typecheck(value, "Object"))
+			{
+				attributes = value;
+			}
+			
+			/**
+			 *	Arrays contain children elements.
+			 */
+			else if (typecheck(value, "Array"))
+			{
+				children = value;
+			}
+			
+			/**
+			 *	Strings contain element text.
+			 */
+			else if (typecheck(value, "String"))
+			{
+				text = value;
+			}
+		});
+		
+		/**
+		 *	If an attribute block exists, check its contents for style and functional declarations.
+		 */
+		if (attributes !== undefined)
+		{
+			/**
+			 *	Set style attributes.
+			 */
+			if (attributes._ !== undefined)
+			{
+				element.css(attributes._);
+				delete attributes._;
+			}
+			
+			/**
+			 *	Extract functional attributes.
+			 */
+			if (attributes.$ !== undefined)
+			{
+				processFunctionalCommands(element, attributes.$);
+				delete attributes.$;
+			}
+			
+			/**
+			 *	Set the element attributes.
+			 */
+			element.attr(attributes);
+		}
+		
+		/**
+		 *	If text is defined, set it in the element.
+		 */
+		if (text !== undefined)
+		{
+			element.html(decodeURIComponent(text));
+		}
+		
+		/**
+		 *	If children are defined, add them as well.
+		 */
+		if (children !== undefined)
+		{
+			$.each(parseShorthand.apply(parseShorthand, children), function (index, child)
+			{
+				element.append(child);
+			});
+		}
+		
+		return element;
 	}
 	
 	/**
@@ -190,7 +397,14 @@
 	 */
 	function createSiblings(tree)
 	{
-		//	Create children items
+		var elements = [];
+		
+		$.each(parseShorthand.apply(parseShorthand, tree), function (index, element)
+		{
+			elements.push(element[0]);
+		});
+	
+		return $(elements);
 	}
 	
 	/**
@@ -204,12 +418,24 @@
 	 */
 	function createGroup(tag, definitions)
 	{
-		//	If the first element in any definition contains an ID or classes, add them to the tag.
-		//	If the tag contains an ID, remove it.
+			/**
+			 *	The elements to create.
+			 */
+		var elements = [];
+	
+		/**
+		 *	Create an element for each of the definitions provided.
+		 */
+		$.each(definitions, function (index, shorthand)
+		{
+			elements.push(createComplexElement(tag, shorthand)[0]);
+		});
+		
+		return $(elements);
 	}
 	
 	//------------------------------
-	//  Serialization
+	//	 Serialization
 	//------------------------------
 	
 	/**
@@ -222,8 +448,80 @@
 			/**
 			 *	The response data.
 			 */
-		var response = [];
+		var response = [],
 		
+			/**
+			 *	A collection of attributes for the element.
+			 */
+			attributes = {},
+			
+			/**
+			 *	The styles being applied to the element.
+			 */
+			styles = {},
+			
+			/**
+			 *	The text.
+			 */
+			text,
+			
+			/**
+			 *	The HTMLElement itself.
+			 */
+			html = element[0];
+		
+		/**
+		 *	Create the attributes object.
+		 */
+		$.each(html.attributes, function (index, attribute)
+		{
+			/**
+			 *	Filter out undesired attributes.
+			 */
+			if ($.inArray(attribute.name, ATTRIBUTE_BLACKLIST) !== -1)
+			{
+				return;
+			}
+			
+			attributes[attribute.name] = attribute.value;
+		});
+		
+		/**
+		 *	Create the styles object.
+		 */
+		$.each(html.style, function (index, style)
+		{
+			styles[style] = element.css(style);
+		});
+		
+		if (!$.isEmptyObject(styles))
+		{
+			attributes._ = styles;
+		}
+		
+		$.each(html.childNodes, function (index, child)
+		{
+			if (child.nodeType === TEXT_NODE)
+			{
+				if (text === undefined)
+				{
+					text = "";
+				}
+				
+				text += encodeURIComponent(child.nodeValue);
+			}
+		});
+		
+		if (!$.isEmptyObject(attributes))
+		{
+			response.push(attributes);
+		}
+		
+		if (text !== undefined)
+		{
+			response.push(text);
+		}
+	
 		return response;
 	}
 	
@@ -331,7 +629,7 @@
 	 *			If multiple arguments are passed, the return will be an array of jQuery 
 	 *			objects; ordered by their position in the arguments.
 	 */
-	function parseShorthand()
+	parseShorthand = function()
 	{
 			/**
 			 *	The constructed elements to return.
@@ -372,7 +670,7 @@
 					}
 					else
 					{
-						elements.push(createComplexElement(shorthand));
+						elements.push(createComplexElement(shorthand.shift(), shorthand));
 					}
 				}
 				
