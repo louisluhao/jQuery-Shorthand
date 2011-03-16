@@ -1,5 +1,5 @@
 /*!
- *	jQuery Shorthand v0.1.0
+ *	jQuery Shorthand
  *
  *	Copyright (c) 2010 Knewton
  *	Dual licensed under:
@@ -25,12 +25,12 @@
 		/**
 		 *	Regular Expression to pull all classes out of a tag definition.
 		 */
-	var RX_CLASSES = /\.[a-zA-Z_\-]+/g,
+	var RX_CLASSES = /\.[a-zA-Z0-9_\-]+/g,
 		
 		/**
 		 *	Regular Expression to pull the id field out of a tag definition.
 		 */
-		RX_ID = /#[a-zA-Z_\-]+/,
+		RX_ID = /#[a-zA-Z0-9_\-]+/,
 		
 		/**
 		 *	Regular Expression to pull the element type out of a tag definition.
@@ -469,6 +469,8 @@
 			}
 			else if ($.isArray(shorthand))
 			{
+				shorthand = $.extend(true, [], shorthand);
+			
 				//	If there is no content defined, break.
 				if (shorthand.length === 0)
 				{

@@ -5,7 +5,7 @@
 	
 	"framework": "jquery", 
 	
-	"version": "0.1.0", 
+	"version": "development", 
 	
 	"composition": ["js"],
 	
