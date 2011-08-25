@@ -489,5 +489,11 @@
       .eq(0).trigger('scroll').end()
       .fn('enqueue');
     $(Screw).queue(function() { $(Screw).trigger('after') });
+    window.test_complete = false;
+  	$(Screw).bind('after', function() {
+  		window.test_complete = true;
+  	});
   })
 })(jQuery);
+
+
