@@ -108,8 +108,10 @@
 					{
 						$.fn.testShorthand = function (text)
 						{
+							console.log("here")
 							return this.each(function ()
 							{
+								console.log("text:", text);
 								$(this).text(text === undefined ? "No Parameters Passed" : ($.isFunction(text) ? (text() || "Noop Function") : text));
 							});
 						};
@@ -125,16 +127,16 @@
 						}
 				    });
 				
-					it("creates element and invokes jQuery function with no parameters passed from shorthand: [div, {$: {testShorthand: undefined}}]", function ()
+					it("creates element and invokes jQuery function with no parameters passed from shorthand: [div, {$: {testShorthand: [undefined]}}]", function ()
 					{
-						var element = $$(["div", {$: {testShorthand: undefined}}]);
+						var element = $$(["div", {$: {testShorthand: [undefined]}}]);
 						
 						expect(element).to(contain_text, "No Parameters Passed");
 					});
 					
-					it("never creates element with dollarsign attribute from shorthand: [div, {$: {testShorthand: undefined}}]", function ()
+					it("never creates element with dollarsign attribute from shorthand: [div, {$: {testShorthand: [undefined]}}]", function ()
 					{
-						var element = $$(["div", {$: {testShorthand: undefined}}]);
+						var element = $$(["div", {$: {testShorthand: [undefined]}}]);
 
 						expect(element.attr("$")).to(be_undefined);
 					});
