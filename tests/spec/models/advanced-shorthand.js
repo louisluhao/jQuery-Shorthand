@@ -108,10 +108,8 @@
 					{
 						$.fn.testShorthand = function (text)
 						{
-							console.log("here")
 							return this.each(function ()
 							{
-								console.log("text:", text);
 								$(this).text(text === undefined ? "No Parameters Passed" : ($.isFunction(text) ? (text() || "Noop Function") : text));
 							});
 						};
