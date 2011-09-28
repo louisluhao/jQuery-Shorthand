@@ -40,15 +40,27 @@ This would generate the following element:
 
 bc. <div class="my-class my-other-class"></div>
 
-h3. Combination Shorthand
+h3. Attribute Shorthand
 
-When using both classes and IDs, the order of them is irrelevant, providing they come after the tag name.
+The optional attribute(s) are defined by using the CSS selector for attributes, [key=value]. The attributes must come after the tag.
 
-bc. "div.my-class#my-div-id.my-other-class"
+You can have any number of attributes defined.
+
+bc. "a[href=http://google.com][target=_blank]"
 
 This would generate the following element:
 
-bc. <div id="my-div-id" class="my-class my-other-class"></div>
+bc. <a href="http://google.com" target="_blank"></a>
+
+h3. Combination Shorthand
+
+When using classes, IDs and attributes, the order of them is irrelevant, providing they come after the tag name.
+
+bc. "div.my-class#my-div-id.my-other-class[name=my-div-name]"
+
+This would generate the following element:
+
+bc. <div id="my-div-id" class="my-class my-other-class" name="my-div-name"></div>
 
 h2. Advanced Shorthand
 
