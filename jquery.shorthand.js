@@ -239,12 +239,12 @@
 			/**
 			 *	Extract the ID from the definition.
 			 */
-			id = shorthand.match(RX_ID),
+			id,
 			
 			/**
 			 *	Extract the classes from the definition.
 			 */
-			classes = shorthand.match(RX_CLASSES),
+			classes,
 
 			/**
 			 *	A container for the attributes in the definition.
@@ -277,10 +277,12 @@
 		}
 
 		element.attr(attributes);
+		shorthand = shorthand.replace(RX_ATTRIBUTE, '');
 
 		/**
 		 *	If any classes are defined, add them to the element.
 		 */
+		classes = shorthand.match(RX_CLASSES);
 		if (classes !== null)
 		{
 			element.addClass(classes.join(' ').replace(RX_CLEAN_CLASSES, ''));
@@ -289,6 +291,7 @@
 		/**
 		 *	If an ID is defined, add it to the element.
 		 */
+		id = shorthand.match(RX_ID);
 		if (id !== null)
 		{
 			element.attr('id', id[0].substr(1));

@@ -92,6 +92,14 @@
 						expect(element).to(have_classes, "test-class");
 						expect(element).to(have_id, "special");
 					});
+
+					it("does not pick up #'s and .'s inside attribute syntax", function() {
+						var element = $$(["a[href=http://site.com#footer]"]);
+
+						expect(element).to(match_selector, "[href=http://site.com#footer]");
+						expect(element).to(match_selector, ":not(.com)");
+						expect(element).to(match_selector, ":not(#footer)");
+					});
 					
 					it("creates element using id from attributes as an override for shorthand: [div#test-div, {id: 'primary-div'}]", function ()
 					{
