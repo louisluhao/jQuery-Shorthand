@@ -1,6 +1,6 @@
 h1. jQuery Shorthand
 
-*Version:* 0.1.0
+*Version:* 0.1.2
 
 *License:* Dual licensed under:
 "MIT":http://www.opensource.org/licenses/mit-license.php
@@ -8,7 +8,7 @@ h1. jQuery Shorthand
 
 *Author:* "Eric Garside":http://code.knewton.com/
 
-*Size:* 3.4K Closure Compiled, 11K Source
+*Size:* 1.9K Closure Compiled, 12K Source
 
 h2. Overview
 
@@ -27,6 +27,10 @@ h2. Documentation
 Check out the "Shorthand Wiki":http://github.com/Knewton/jQuery-Shorthand/wiki
 
 h2. Changelog
+
+*Version 0.1.2*
+
+* Add new attribute syntax
 
 *Version 0.1*
 
