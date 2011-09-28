@@ -1,6 +1,6 @@
 h1. Shorthand Specification
 
-*Version:* 0.1.0
+*Version:* 0.1.2
 
 h2. Simple Shorthand
 
