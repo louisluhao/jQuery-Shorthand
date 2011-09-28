@@ -74,6 +74,24 @@
 						expect(element.attr("type")).to(equal, "text");
 						expect(element.val()).to(equal, "Default Value");
 					});
+
+					it("creates element with attributes from shorthand: [input[type=text][value=Default Value]]", function ()
+					{
+						var element = $$(["input[type=text][value=Default Value]"]);
+
+						expect(element.attr("type")).to(equal, "text");
+						expect(element.val()).to(equal, "Default Value");
+					});
+
+					it("creates element with attributes interleaved with other syntax from shorthand: [input[type=text].test-class[value=Default Value]#special]", function ()
+					{
+						var element = $$(["input[type=text].test-class[value=Default Value]#special"]);
+
+						expect(element.attr("type")).to(equal, "text");
+						expect(element.val()).to(equal, "Default Value");
+						expect(element).to(have_classes, "test-class");
+						expect(element).to(have_id, "special");
+					});
 					
 					it("creates element using id from attributes as an override for shorthand: [div#test-div, {id: 'primary-div'}]", function ()
 					{

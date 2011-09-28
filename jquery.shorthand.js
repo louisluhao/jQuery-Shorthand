@@ -26,7 +26,12 @@
 		 *	Regular Expression to pull all classes out of a tag definition.
 		 */
 	var RX_CLASSES = /\.[a-zA-Z0-9_\-]+/g,
-		
+
+		/**
+		 *	Regular Expression to pull an attribute out of a tag definition.
+		 */
+		RX_ATTRIBUTE = /\[([a-z0-9_\-]+)=([^\]]+)\]/g,
+
 		/**
 		 *	Regular Expression to pull the id field out of a tag definition.
 		 */
@@ -240,7 +245,17 @@
 			 *	Extract the classes from the definition.
 			 */
 			classes = shorthand.match(RX_CLASSES),
-			
+
+			/**
+			 *	A container for the attributes in the definition.
+			 */
+			attributes = {},
+
+			/**
+			 *	A local variable to hold an attribute pulled from the definition.
+			 */
+			attribute_catcher = null,
+
 			/**
 			 *	The jQuery element.
 			 */
@@ -256,7 +271,13 @@
 		 *	Create the element.
 		 */
 		element = $(document.createElement(tag[0]));
-		
+
+		while (attribute_catcher = RX_ATTRIBUTE.exec(shorthand)) {
+			attributes[attribute_catcher[1]] = attribute_catcher[2];
+		}
+
+		element.attr(attributes);
+
 		/**
 		 *	If any classes are defined, add them to the element.
 		 */
