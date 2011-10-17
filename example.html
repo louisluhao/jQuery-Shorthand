@@ -64,20 +64,12 @@
 		 *	Equivalent: 
 		 *		jQuery('<input type="text" name="first-name" value="Eric" />');
 		 */
-		$$(
-			[
-				"input", 
-				
-				{
-					type: "text",
-					
-					name: "first-name",
-					
-					value: "Eric"
-				}
-			]
-		);
-		
+		$$(["input", {
+			type: "text",
+			name: "first-name",
+			value: "Eric"
+		}]);
+
 		//------------------------------
 		//  Styles
 		//------------------------------
@@ -86,126 +78,78 @@
 		 *	Equivalent: 
 		 *		jQuery('<span style="display:block; background-color: #F00; color: #FFF;">Some Info!</span>');
 		 */
-		$$(
-			[
-				"span", 
-				
-				{
-					_:
-					{
-						display: "block",
-						
-						backgroundColor: "#F00",
-						
-						color: "#FFF"
-					}
-				},
-				
-				"Some Info!"
-			]
-		);
-		
+		$$(["span", {
+			_: {
+				display: "block",
+				backgroundColor: "#F00",
+				color: "#FFF"
+			}},
+			"Some Info!"
+		]);
+
 		//------------------------------
 		//  jQuery Methods
 		//------------------------------
 		
 		/**
 		 *	Equivalent: 
-		 *		jQuery('<a href="#">Click me for fun!</a>').click(function ()
-		 *		{
+		 *		jQuery('<a href="#">Click me for fun!</a>').click(function () {
 		 *			$(this).addClass("had-fun");
 		 *		});
 		 */
-		$$(
-			[
-				"a", 
-				
-				{
-					href: "#",
-					
-					$:
-					{
-						click: function ()
-						{
-							$(this).addClass("had-fun");
-						}
-					}
-				},
-				
-				"Click me for fun!"
-			]
-		);
-		
+		$$(["a", {
+			href: "#",
+			$: {
+				click: function () {
+					$(this).addClass("had-fun");
+				}
+			}},
+			"Click me for fun!"
+		]);
+
 		/**
 		 *	Equivalent: 
-		 *		jQuery.myHandlers = 
-		 *		{
-		 *			haveFun: function ()
-		 *			{
+		 *		jQuery.myHandlers = {
+		 *			haveFun: function () {
 		 *				$(this).addClass("had-fun");
 		 *			}
 		 *		}
 		 *
 		 *		jQuery('<a href="#">Click me for fun!</a>').click(jQuery.myHandlers.haveFun);
 		 */
-		jQuery.myHandlers = 
-		{
-			haveFun: function ()
-			{
+		jQuery.myHandlers = {
+			haveFun: function () {
 				$(this).addClass("had-fun");
 			}
 		};
-		 
-		$$(
-			[
-				"a", 
-				
-				{
-					href: "#",
-					
-					$:
-					{
-						click: "jQuery::myHandlers::haveFun"
-					}
-				},
-				
-				"Click me for fun!"
-			]
-		);
-		
+
+		$$(["a", {
+			href: "#",
+			$: {
+				click: "jQuery::myHandlers::haveFun"
+			}},
+			"Click me for fun!"
+		]);
+
 		/**
 		 *	Equivalent: 
-		 *		jQuery('<div></div>').animate(
-		 *			{
+		 *		jQuery('<div></div>').animate({
 		 *				opacity: 0.25
 		 *			},
-		 *
 		 *			5000,
-		 *
 		 *			jQuery.myHandlers.haveFun
 		 *		);
 		 */
-		$$(
-			[
-				"div", 
-				
-				{	
-					$:
-					{
-						animate: 
-						[
-							{
-								opacity: 0.25
-							},
-							
-							5000,
-							
-							"jQuery::myHandlers::haveFun"
-						]
-					}
-				}
-			]
-		);
+		$$(["div", {
+			$: {
+				animate: [{
+						opacity: 0.25
+					},
+					5000,
+					"jQuery::myHandlers::haveFun"
+				]
+			}
+		}]);
 		
 		//------------------------------
 		//  Children
@@ -215,42 +159,31 @@
 		 *	Equivalent: 
 		 *		jQuery('<div><span>Span 1</span><span class="span-2">Span 2</span></div>');
 		 */
-		$$(
-			[
-				"div", 
-				
-				[
-					["span", "Span 1"],
-					
-					["span.span-2", "Span 2"]
-				]
-			]
-		);
-		
+		$$(["div", [
+			["span", "Span 1"],
+			["span.span-2", "Span 2"]
+		]]);
+
 		//------------------------------
 		//
 		//  Complex Shorthand
 		//
 		//------------------------------
-		
+
 		//------------------------------
 		//  Siblings
 		//------------------------------
-		
+
 		/**
 		 *	Equivalent: 
 		 *		jQuery([jQuery("<div></div>")[0], jQuery("<span></span>")[0], jQuery("<a></a>")[0]]);
 		 */
-		$$(
-			[
-				["div"],
-				
-				["span"],
-				
-				["a"]
-			]
-		);
-		
+		$$([
+			["div"],
+			["span"],
+			["a"]
+		]);
+
 		//------------------------------
 		//  Groups
 		//------------------------------
@@ -259,28 +192,11 @@
 		 *	Equivalent: 
 		 *		jQuery([jQuery("<option value="1">Option 1</option>")[0], jQuery("<option value="2">Option 2</option>")[0]]);
 		 */
-		$$(
-			[
-				"&option",
-				
-				[
-					{
-						value: 1
-					},
-					
-					"Value 1"
-				],
-				
-				[
-					{
-						value: 2
-					},
-					
-					"Value 2"
-				]
-			]
-		);
-		
+		$$(["&option", 
+			[{value: 1}, "Value 1"],
+			[{value: 2}, "Value 2"]
+		]);
+
 		//	Check out [http://github.com/Knewton/jQuery-Shorthand/wiki] for more extensive documentation and examples.
 		}(jQuery));
 		</script>
